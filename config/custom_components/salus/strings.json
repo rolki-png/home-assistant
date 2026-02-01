@@ -1,0 +1,26 @@
+{
+  "config": {
+    "flow_title": "Salus: {name}",
+    "step": {
+      "user": {
+        "title": "Connect to Salus Gateway",
+        "description": "You will need IP address and first 16 symbols of the EUID (without spaces), written down on the bottom of your gateway under microUSB port (eg. 001E5E0D32906128).",
+        "data": {
+          "host": "IP Address",
+          "token": "EUID",
+          "name": "Name of the Gateway"
+        }
+      }
+    },
+    "error": {
+      "connect_error": "Failed to connect, please check IP address",
+      "auth_error": "Failed to connect, please check EUID",
+      "euid_decrypt_error": "Gateway response could not be decrypted. Try EUID 0000000000000000, or recheck the 16-character EUID (no spaces). Ensure Local WiFi Mode is enabled in the Salus app.",
+      "unknown_error": "Connection failed. Check IP, EUID, Local WiFi Mode in Salus app, and gateway power. See logs for details."
+    },
+    "abort": {
+      "already_configured": "Device is already configured",
+      "already_in_progress": "Config flow for this Salus device is already in progress."
+    }
+  }
+}
