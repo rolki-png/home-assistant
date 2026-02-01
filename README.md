@@ -41,7 +41,8 @@ Restart:
 docker compose restart homeassistant
 ```
 
-## Backup
+## Backup to GitHub
 
+- See **[BACKUP.md](BACKUP.md)** for creating the GitHub repo and pushing.
 - Config is backed up by committing to git (see above for what’s tracked).
 - For a full backup (including `.storage` and DB), use **Settings → System → Backups** in Home Assistant, or copy the whole `config/` folder elsewhere.
