@@ -16,6 +16,9 @@ views:
           - type: template
             icon: mdi:sun-clock
             content: "{{ now().strftime('%A, %d %B') }}"
+          - type: entity
+            entity: sensor.metered_energy_cost_today
+            icon: mdi:cash
         alignment: center
 
       - type: custom:mushroom-title-card
@@ -28,7 +31,7 @@ views:
         cards:
           - type: custom:mushroom-climate-card
             entity: climate.home_konyha
-            name: Bedroom (ground floor)
+            name: Kitchen (ground floor)
             icon: mdi:thermometer
             show_temperature_control: true
             collapsible_controls: true
@@ -43,35 +46,6 @@ views:
             collapsible_controls: true
             tap_action:
               action: more-info
-
-      - type: custom:mushroom-title-card
-        title: Living Room
-        subtitle: null
-
-      - type: grid
-        columns: 2
-        square: false
-        cards:
-          - type: custom:mushroom-media-player-card
-            entity: media_player.65_crystal_uhd_ue65u8092fuxxh
-            name: Samsung TV
-            icon: mdi:television
-            use_media_info: true
-            show_volume_level: true
-            media_controls:
-              - on_off
-              - play_pause_stop
-            volume_controls:
-              - volume_buttons
-              - volume_mute
-            collapsible_controls: true
-
-          - type: custom:mushroom-media-player-card
-            entity: media_player.65_crystal_uhd
-            name: TV Cast
-            icon: mdi:cast
-            use_media_info: true
-            collapsible_controls: true
 
       - type: custom:mushroom-title-card
         title: Kitchen
@@ -122,25 +96,6 @@ views:
             name: Power
             tap_action:
               action: toggle
-
-      - type: custom:mushroom-title-card
-        title: Bedroom
-        subtitle: null
-
-      - type: grid
-        columns: 2
-        square: false
-        cards:
-          - type: custom:mushroom-media-player-card
-            entity: media_player.bedroom_speaker
-            name: Bedroom Speaker
-            icon: mdi:speaker
-            use_media_info: true
-            show_volume_level: true
-            volume_controls:
-              - volume_buttons
-              - volume_mute
-            collapsible_controls: true
 
       - type: custom:mushroom-title-card
         title: Bathroom
@@ -198,6 +153,79 @@ views:
         columns: 2
         square: false
         cards:
+          - type: custom:mushroom-media-player-card
+            entity: media_player.65_crystal_uhd_ue65u8092fuxxh
+            name: Office TV
+            icon: mdi:television
+            use_media_info: true
+            show_volume_level: true
+            media_controls:
+              - on_off
+              - play_pause_stop
+            volume_controls:
+              - volume_buttons
+              - volume_mute
+            collapsible_controls: true
+
+          - type: custom:mushroom-media-player-card
+            entity: media_player.65_crystal_uhd
+            name: Office TV Cast
+            icon: mdi:cast
+            use_media_info: true
+            collapsible_controls: true
+
+          - type: custom:mushroom-media-player-card
+            entity: media_player.bedroom_speaker
+            name: Office Speaker
+            icon: mdi:speaker
+            use_media_info: true
+            show_volume_level: true
+            volume_controls:
+              - volume_buttons
+              - volume_mute
+            collapsible_controls: true
+
+          - type: custom:mushroom-entity-card
+            entity: switch.pc
+            name: PC desk
+            icon: mdi:desktop-classic
+            tap_action:
+              action: toggle
+
+          - type: custom:mushroom-template-card
+            entity: sensor.pc_current_consumption
+            primary: PC desk power
+            secondary: "{{ states('sensor.pc_current_consumption') | round(1, default=0) }} W"
+            icon: mdi:lightning-bolt
+            icon_color: |-
+              {% set power = states('sensor.pc_current_consumption') | float(0) %}
+              {% if power > 100 %}red
+              {% elif power > 50 %}amber
+              {% elif power > 0 %}green
+              {% else %}grey
+              {% endif %}
+
+          - type: custom:mushroom-template-card
+            entity: sensor.pc_today_s_consumption
+            primary: PC desk today
+            secondary: "{{ states('sensor.pc_today_s_consumption') | round(3, default=0) }} kWh"
+            icon: mdi:meter-electric
+            icon_color: blue
+
+          - type: custom:mushroom-template-card
+            entity: sensor.pc_desk_energy_cost_today
+            primary: PC desk cost today
+            secondary: "{{ states('sensor.pc_desk_energy_cost_today') }} lei"
+            icon: mdi:cash
+            icon_color: green
+
+          - type: custom:mushroom-template-card
+            entity: sensor.pc_desk_running_cost
+            primary: PC desk running
+            secondary: "{{ states('sensor.pc_desk_running_cost') }} lei/h"
+            icon: mdi:cash-clock
+            icon_color: amber
+
           - type: custom:mushroom-entity-card
             entity: switch.shelly1pmminig3_d0cf13cfe9c8
             name: Smart Switch
@@ -208,7 +236,7 @@ views:
           - type: custom:mushroom-template-card
             entity: sensor.shelly1pmminig3_d0cf13cfe9c8_power
             primary: Power Usage
-            secondary: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | round(1) }} W"
+            secondary: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | round(1, default=0) }} W"
             icon: mdi:lightning-bolt
             icon_color: |-
               {% set power = states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | float(0) %}
@@ -219,11 +247,25 @@ views:
               {% endif %}
 
           - type: custom:mushroom-template-card
-            entity: sensor.shelly1pmminig3_d0cf13cfe9c8_energy
-            primary: Energy Used
-            secondary: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_energy') | round(2) }} kWh"
+            entity: sensor.office_switch_energy_daily
+            primary: Office switch today
+            secondary: "{{ states('sensor.office_switch_energy_daily') | round(3, default=0) }} kWh"
             icon: mdi:meter-electric
             icon_color: blue
+
+          - type: custom:mushroom-template-card
+            entity: sensor.office_switch_energy_cost_today
+            primary: Office switch cost today
+            secondary: "{{ states('sensor.office_switch_energy_cost_today') }} lei"
+            icon: mdi:cash
+            icon_color: green
+
+          - type: custom:mushroom-template-card
+            entity: sensor.office_switch_running_cost
+            primary: Running now
+            secondary: "{{ states('sensor.office_switch_running_cost') }} lei/h"
+            icon: mdi:cash-clock
+            icon_color: amber
 
           - type: custom:mushroom-entity-card
             entity: sensor.canon_gx4000_series
@@ -378,6 +420,44 @@ views:
             name: Door
 
           - type: custom:mushroom-entity-card
+            entity: binary_sensor.washing_machine_mobile_start
+            name: Mobile start
+
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.washing_machine_remote_control
+            name: Remote control
+
+          - type: custom:mushroom-entity-card
+            entity: button.washing_machine_start
+            name: Start
+            tap_action:
+              action: toggle
+
+          - type: custom:mushroom-entity-card
+            entity: button.washing_machine_pause
+            name: Pause
+            tap_action:
+              action: toggle
+
+          - type: custom:mushroom-entity-card
+            entity: button.washing_machine_stop
+            name: Stop
+            tap_action:
+              action: toggle
+
+          - type: custom:mushroom-entity-card
+            entity: script.washing_machine_set_programme
+            name: Set programme
+            tap_action:
+              action: more-info
+
+          - type: custom:mushroom-entity-card
+            entity: script.washing_machine_list_programmes
+            name: List programmes
+            tap_action:
+              action: toggle
+
+          - type: custom:mushroom-entity-card
             entity: sensor.washing_machine_programme
             name: Programme
 
@@ -401,9 +481,62 @@ views:
             entity: sensor.washing_machine_energy_consumption
             name: Energy Used
 
+          - type: custom:mushroom-template-card
+            entity: sensor.washing_machine_energy_cost
+            primary: Energy cost
+            secondary: "{{ states('sensor.washing_machine_energy_cost') }} lei"
+            icon: mdi:cash
+            icon_color: green
+
           - type: custom:mushroom-entity-card
             entity: sensor.washing_machine_water_consumption
             name: Water Used
+
+  - title: Energy
+    path: energy
+    icon: mdi:flash
+    cards:
+      - type: custom:mushroom-title-card
+        title: Electricity cost
+        subtitle: 1.16 lei/kWh unless you change the price helper
+
+      - type: entities
+        entities:
+          - entity: input_number.electricity_price_ron
+            name: Price
+          - entity: sensor.metered_energy_cost_today
+            name: Metered cost today
+          - entity: sensor.metered_energy_cost_this_month
+            name: Metered cost this month
+          - entity: sensor.pc_desk_energy_cost_today
+            name: PC desk today
+          - entity: sensor.pc_desk_energy_cost_this_month
+            name: PC desk this month
+          - entity: sensor.office_switch_energy_cost_today
+            name: Office switch today
+          - entity: sensor.office_switch_energy_cost_this_month
+            name: Office switch this month
+          - entity: sensor.washing_machine_energy_cost_today
+            name: Washing machine today
+          - entity: sensor.washing_machine_energy_cost_this_month
+            name: Washing machine this month
+
+      - type: statistics-graph
+        title: Daily energy (kWh)
+        days_to_show: 30
+        chart_type: bar
+        stat_types:
+          - change
+        entities:
+          - sensor.pc_today_s_consumption
+          - sensor.shelly1pmminig3_d0cf13cfe9c8_energy
+          - sensor.washing_machine_energy_consumption
+
+      - type: energy-date-selection
+
+      - type: energy-usage-graph
+
+      - type: energy-devices-graph
 
   - title: Media
     path: media
@@ -419,7 +552,7 @@ views:
         cards:
           - type: custom:mushroom-media-player-card
             entity: media_player.65_crystal_uhd_ue65u8092fuxxh
-            name: Samsung TV
+            name: Office TV
             icon: mdi:television
             use_media_info: true
             show_volume_level: true
@@ -451,7 +584,7 @@ views:
 
           - type: custom:mushroom-media-player-card
             entity: media_player.bedroom_speaker
-            name: Bedroom Speaker
+            name: Office Speaker
             icon: mdi:speaker
             use_media_info: true
             show_volume_level: true
@@ -466,7 +599,7 @@ views:
 
           - type: custom:mushroom-media-player-card
             entity: media_player.65_crystal_uhd
-            name: TV Cast
+            name: Office TV Cast
             icon: mdi:cast
             use_media_info: true
             show_volume_level: true
