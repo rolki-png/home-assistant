@@ -1,0 +1,182 @@
+- sensor:
+    - name: Electricity price
+      unique_id: electricity_price_ron
+      unit_of_measurement: RON/kWh
+      icon: mdi:cash
+      state: "{{ states('input_number.electricity_price_ron') | float(1.16) }}"
+
+    - name: Office switch energy cost
+      unique_id: office_switch_energy_cost
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_energy') | is_number }}"
+      state: >-
+        {{ ((states('sensor.shelly1pmminig3_d0cf13cfe9c8_energy') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: Office switch running cost
+      unique_id: office_switch_running_cost
+      unit_of_measurement: RON/h
+      icon: mdi:cash-clock
+      availability: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | is_number }}"
+      state: >-
+        {{ (((states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | float(0)) / 1000)
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(4) }}
+
+    - name: Office switch energy cost today
+      unique_id: office_switch_energy_cost_today
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.office_switch_energy_daily') | is_number }}"
+      state: >-
+        {{ ((states('sensor.office_switch_energy_daily') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: Office switch energy cost this month
+      unique_id: office_switch_energy_cost_month
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.office_switch_energy_monthly') | is_number }}"
+      state: >-
+        {{ ((states('sensor.office_switch_energy_monthly') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: Washing machine energy cost
+      unique_id: washing_machine_energy_cost
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.washing_machine_energy_consumption') | is_number }}"
+      state: >-
+        {{ ((states('sensor.washing_machine_energy_consumption') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: Washing machine energy cost today
+      unique_id: washing_machine_energy_cost_today
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.washing_machine_energy_daily') | is_number }}"
+      state: >-
+        {{ ((states('sensor.washing_machine_energy_daily') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: Washing machine energy cost this month
+      unique_id: washing_machine_energy_cost_month
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.washing_machine_energy_monthly') | is_number }}"
+      state: >-
+        {{ ((states('sensor.washing_machine_energy_monthly') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: PC desk running cost
+      unique_id: pc_desk_running_cost
+      unit_of_measurement: RON/h
+      icon: mdi:cash-clock
+      availability: "{{ states('sensor.pc_current_consumption') | is_number }}"
+      state: >-
+        {{ (((states('sensor.pc_current_consumption') | float(0)) / 1000)
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(4) }}
+
+    - name: PC desk energy cost today
+      unique_id: pc_desk_energy_cost_today
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.pc_today_s_consumption') | is_number }}"
+      state: >-
+        {{ ((states('sensor.pc_today_s_consumption') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: PC desk energy cost this month
+      unique_id: pc_desk_energy_cost_month
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      availability: "{{ states('sensor.pc_this_month_s_consumption') | is_number }}"
+      state: >-
+        {{ ((states('sensor.pc_this_month_s_consumption') | float(0))
+            * (states('input_number.electricity_price_ron') | float(1.16)))
+           | round(2) }}
+
+    - name: Metered energy cost today
+      unique_id: metered_energy_cost_today
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      state: >-
+        {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+        {% set office = states('sensor.office_switch_energy_daily') %}
+        {% set washer = states('sensor.washing_machine_energy_daily') %}
+        {% set pc = states('sensor.pc_today_s_consumption') %}
+        {% set office_ron = (office | float(0) if office | is_number else 0) * price %}
+        {% set washer_ron = (washer | float(0) if washer | is_number else 0) * price %}
+        {% set pc_ron = (pc | float(0) if pc | is_number else 0) * price %}
+        {{ (office_ron + washer_ron + pc_ron) | round(2) }}
+      attributes:
+        office_ron: >-
+          {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+          {% set office = states('sensor.office_switch_energy_daily') %}
+          {{ ((office | float(0) if office | is_number else 0) * price) | round(2) }}
+        pc_ron: >-
+          {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+          {% set pc = states('sensor.pc_today_s_consumption') %}
+          {{ ((pc | float(0) if pc | is_number else 0) * price) | round(2) }}
+        washer_ron: >-
+          {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+          {% set washer = states('sensor.washing_machine_energy_daily') %}
+          {{ ((washer | float(0) if washer | is_number else 0) * price) | round(2) }}
+        price_ron: "{{ states('input_number.electricity_price_ron') | float(1.16) | round(4) }}"
+
+    - name: Metered energy cost this month
+      unique_id: metered_energy_cost_month
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: RON
+      icon: mdi:cash
+      state: >-
+        {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+        {% set office = states('sensor.office_switch_energy_monthly') %}
+        {% set washer = states('sensor.washing_machine_energy_monthly') %}
+        {% set pc = states('sensor.pc_this_month_s_consumption') %}
+        {% set office_ron = (office | float(0) if office | is_number else 0) * price %}
+        {% set washer_ron = (washer | float(0) if washer | is_number else 0) * price %}
+        {% set pc_ron = (pc | float(0) if pc | is_number else 0) * price %}
+        {{ (office_ron + washer_ron + pc_ron) | round(2) }}
+      attributes:
+        office_ron: >-
+          {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+          {% set office = states('sensor.office_switch_energy_monthly') %}
+          {{ ((office | float(0) if office | is_number else 0) * price) | round(2) }}
+        pc_ron: >-
+          {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+          {% set pc = states('sensor.pc_this_month_s_consumption') %}
+          {{ ((pc | float(0) if pc | is_number else 0) * price) | round(2) }}
+        washer_ron: >-
+          {% set price = states('input_number.electricity_price_ron') | float(1.16) %}
+          {% set washer = states('sensor.washing_machine_energy_monthly') %}
+          {{ ((washer | float(0) if washer | is_number else 0) * price) | round(2) }}
+        price_ron: "{{ states('input_number.electricity_price_ron') | float(1.16) | round(4) }}"
