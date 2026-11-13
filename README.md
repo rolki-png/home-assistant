@@ -28,6 +28,7 @@ Home Assistant configuration and dashboards. Runs via Docker Compose.
 2. Copy `config/secrets.example.yaml` to `config/secrets.yaml` and add your secrets.
 3. Start: `docker compose up -d`
 4. Open HA, complete onboarding if needed, and re-add integrations (or restore `.storage` from a backup if you have one).
+5. Install the Mushroom frontend dependency from HACS (`piitaya/lovelace-mushroom`) before opening the Home dashboard, as every card uses `custom:mushroom-*`.
 
 ## Run
 

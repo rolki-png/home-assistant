@@ -446,18 +446,6 @@ views:
               action: toggle
 
           - type: custom:mushroom-entity-card
-            entity: script.washing_machine_set_programme
-            name: Set programme
-            tap_action:
-              action: more-info
-
-          - type: custom:mushroom-entity-card
-            entity: script.washing_machine_list_programmes
-            name: List programmes
-            tap_action:
-              action: toggle
-
-          - type: custom:mushroom-entity-card
             entity: sensor.washing_machine_programme
             name: Programme
 
