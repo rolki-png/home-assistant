@@ -25,10 +25,10 @@ input_number:
 
 utility_meter:
   office_switch_energy_daily:
-    source: sensor.shelly1pmminig3_d0cf13cfe9c8_energy
+    source: sensor.office_smart_switch_energy
     cycle: daily
   office_switch_energy_monthly:
-    source: sensor.shelly1pmminig3_d0cf13cfe9c8_energy
+    source: sensor.office_smart_switch_energy
     cycle: monthly
   washing_machine_energy_daily:
     source: sensor.washing_machine_energy_consumption

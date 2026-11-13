@@ -227,19 +227,19 @@ views:
             icon_color: amber
 
           - type: custom:mushroom-entity-card
-            entity: switch.shelly1pmminig3_d0cf13cfe9c8
+            entity: switch.office_smart_switch
             name: Smart Switch
             icon: mdi:power-socket-eu
             tap_action:
               action: toggle
 
           - type: custom:mushroom-template-card
-            entity: sensor.shelly1pmminig3_d0cf13cfe9c8_power
+            entity: sensor.office_smart_switch_power
             primary: Power Usage
-            secondary: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | round(1, default=0) }} W"
+            secondary: "{{ states('sensor.office_smart_switch_power') | round(1, default=0) }} W"
             icon: mdi:lightning-bolt
             icon_color: |-
-              {% set power = states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | float(0) %}
+              {% set power = states('sensor.office_smart_switch_power') | float(0) %}
               {% if power > 100 %}red
               {% elif power > 50 %}amber
               {% elif power > 0 %}green
@@ -529,7 +529,7 @@ views:
           - change
         entities:
           - sensor.pc_today_s_consumption
-          - sensor.shelly1pmminig3_d0cf13cfe9c8_energy
+          - sensor.office_smart_switch_energy
           - sensor.washing_machine_energy_consumption
 
       - type: energy-date-selection

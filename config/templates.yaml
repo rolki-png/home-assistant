@@ -11,9 +11,9 @@
       state_class: total
       unit_of_measurement: RON
       icon: mdi:cash
-      availability: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_energy') | is_number }}"
+      availability: "{{ states('sensor.office_smart_switch_energy') | is_number }}"
       state: >-
-        {{ ((states('sensor.shelly1pmminig3_d0cf13cfe9c8_energy') | float(0))
+        {{ ((states('sensor.office_smart_switch_energy') | float(0))
             * (states('input_number.electricity_price_ron') | float(1.16)))
            | round(2) }}
 
@@ -21,9 +21,9 @@
       unique_id: office_switch_running_cost
       unit_of_measurement: RON/h
       icon: mdi:cash-clock
-      availability: "{{ states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | is_number }}"
+      availability: "{{ states('sensor.office_smart_switch_power') | is_number }}"
       state: >-
-        {{ (((states('sensor.shelly1pmminig3_d0cf13cfe9c8_power') | float(0)) / 1000)
+        {{ (((states('sensor.office_smart_switch_power') | float(0)) / 1000)
             * (states('input_number.electricity_price_ron') | float(1.16)))
            | round(4) }}
 
