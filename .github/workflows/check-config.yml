@@ -1,0 +1,20 @@
+name: check-config
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  check-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Home Assistant config
+        run: |
+          tmp=$(mktemp -d)
+          git archive HEAD config | tar -x -C "$tmp"
+          docker run --rm -v "$tmp/config":/config ghcr.io/home-assistant/home-assistant:stable python -m homeassistant --script check_config -c /config
