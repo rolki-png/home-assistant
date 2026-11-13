@@ -38,11 +38,13 @@
 
 ```bash
 cd /home/rolki/projects/home-assistant
-git add .
+git add -A config/ README.md BACKUP.md docker-compose.yaml scripts/ .gitignore
 git status
 git commit -m "Update HA config"
 git push
 ```
+
+Read the `git status` output before you commit, and check that no secrets, backups or credentials are listed.
 
 ## What’s backed up (in git)
 

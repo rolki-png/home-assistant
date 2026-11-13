@@ -54,7 +54,14 @@ Thumbs.db
 config/*.md
 
 # -----------------------------------------------------------------------------
-# Optional: uncomment if you use and don’t want to track
+# Runtime data, cloud credentials, backups and personal data (never commit)
 # -----------------------------------------------------------------------------
-# config/tts/
-# config/.cloud/
+config/backups/
+config/.cloud/
+config/known_devices.yaml
+config/ip_bans.yaml
+config/tts/
+config/deps/
+config/image/
+config/.cache/
+*.tar
