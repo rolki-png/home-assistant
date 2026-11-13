@@ -47,3 +47,15 @@ docker compose restart homeassistant
 - See **[BACKUP.md](BACKUP.md)** for creating the GitHub repo and pushing.
 - Config is backed up by committing to git (see above for what’s tracked).
 - For a full backup (including `.storage` and DB), use **Settings → System → Backups** in Home Assistant, or copy the whole `config/` folder elsewhere.
+
+## Validate
+
+Check the config with the official Home Assistant checker before pushing. Run it on a copy of `config/`, because Home Assistant may write runtime files into the mounted folder:
+
+```bash
+tmp=$(mktemp -d)
+git archive HEAD config | tar -x -C "$tmp"
+docker run --rm -v "$tmp/config":/config ghcr.io/home-assistant/home-assistant:stable python -m homeassistant --script check_config -c /config
+```
+
+It prints `Testing configuration at /config` and exits 0 when the config is valid. Any other exit code means it is broken. The `check-config` GitHub Actions workflow runs the same check on pull requests and pushes to `master`.
