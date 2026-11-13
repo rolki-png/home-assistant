@@ -8,6 +8,15 @@ recorder:
   purge_keep_days: 365
   commit_interval: 30
 
+lovelace:
+  dashboards:
+    home-yaml:
+      mode: yaml
+      filename: dashboards/main-dashboard.yaml
+      title: Home
+      icon: mdi:home
+      show_in_sidebar: true
+
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
