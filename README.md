@@ -42,6 +42,14 @@ Restart:
 docker compose restart homeassistant
 ```
 
+Update the stack (pulls the latest images, then applies them):
+
+```bash
+scripts/update-stack.sh
+```
+
+The script finds `docker-compose.yaml` relative to its own location, so it works from any clone. Set `COMPOSE_FILE` to use a different compose file.
+
 ## Backup to GitHub
 
 - See **[BACKUP.md](BACKUP.md)** for creating the GitHub repo and pushing.
