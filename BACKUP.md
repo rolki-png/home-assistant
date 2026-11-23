@@ -15,14 +15,14 @@
    ```
    For this repo only (optional):
    ```bash
-   cd /home/rolki/projects/home-assistant
+   cd "$(git rev-parse --show-toplevel)"
    git config user.email "your-email@example.com"
    git config user.name "Your Name"
    ```
 
 3. **Add GitHub as remote and push** (replace with your repo URL):
    ```bash
-   cd /home/rolki/projects/home-assistant
+   cd "$(git rev-parse --show-toplevel)"
    git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
    git branch -M main
    git push -u origin main
@@ -37,7 +37,7 @@
 ## Later: backup changes
 
 ```bash
-cd /home/rolki/projects/home-assistant
+cd "$(git rev-parse --show-toplevel)"
 git add -A config/ README.md BACKUP.md docker-compose.yaml scripts/ .gitignore
 git status
 git commit -m "Update HA config"
